@@ -40,6 +40,7 @@ backup = patch_opencc_init()
 common_args = [
     "--collect-all=rich",
     "--collect-all=opencc_pyo3",
+    "--collect-all=charset_normalizer",
 ]
 
 if is_macos:
