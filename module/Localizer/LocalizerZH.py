@@ -520,6 +520,7 @@ class LocalizerZH:
     expert_settings_page_response_check_kana_residue: str = "假名残留检查"
     expert_settings_page_response_check_hangeul_residue: str = "谚文残留检查"
     expert_settings_page_response_check_similarity: str = "相似度检查"
+    expert_settings_page_response_check_degradation: str = "退化检测"
     expert_settings_page_clean_ruby: str = "清理原文中的注音文本"
     expert_settings_page_clean_ruby_desc: str = (
         "移除注音上标中的注音部分，仅保留正文部分，默认禁用"

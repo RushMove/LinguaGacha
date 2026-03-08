@@ -520,6 +520,7 @@ class LocalizerEN(LocalizerZH):
     expert_settings_page_response_check_kana_residue: str = "Kana Residue Check"
     expert_settings_page_response_check_hangeul_residue: str = "Hangeul Residue Check"
     expert_settings_page_response_check_similarity: str = "Similarity Check"
+    expert_settings_page_response_check_degradation: str = "Degradation Detection"
     expert_settings_page_clean_ruby: str = "Clean Ruby Text"
     expert_settings_page_clean_ruby_desc: str = (
         "Removes the phonetic ruby characters from annotations, retaining only the main text, disabled by default"

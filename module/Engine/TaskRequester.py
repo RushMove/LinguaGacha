@@ -358,7 +358,7 @@ class TaskRequester(Base):
             if not isinstance(text, str) or not text:
                 return
 
-            if state.degradation_detector.feed(text):
+            if self.requester.config.check_degradation and state.degradation_detector.feed(text):
                 raise StreamDegradationError("degradation detected")
 
         def finalize(
@@ -375,7 +375,7 @@ class TaskRequester(Base):
                 self.requester.extract_openai_think_and_result(message)
             )
 
-            if self.requester.has_output_degradation(
+            if self.requester.config.check_degradation and self.requester.has_output_degradation(
                 response_result[
                     -self.requester.STREAM_DEGRADATION_FALLBACK_WINDOW_CHARS :
                 ]
@@ -427,7 +427,7 @@ class TaskRequester(Base):
         ) -> None:
             if not isinstance(item, str) or not item:
                 return
-            if state.degradation_detector.feed(item):
+            if self.requester.config.check_degradation and state.degradation_detector.feed(item):
                 raise StreamDegradationError("degradation detected")
 
         def finalize(
@@ -460,7 +460,7 @@ class TaskRequester(Base):
                 else ""
             )
 
-            if self.requester.has_output_degradation(
+            if self.requester.config.check_degradation and self.requester.has_output_degradation(
                 response_result[
                     -self.requester.STREAM_DEGRADATION_FALLBACK_WINDOW_CHARS :
                 ]
@@ -527,7 +527,7 @@ class TaskRequester(Base):
                                 state.think_parts.append(text)
                             else:
                                 state.result_parts.append(text)
-                                if state.degradation_detector.feed(text):
+                                if self.requester.config.check_degradation and state.degradation_detector.feed(text):
                                     raise StreamDegradationError("degradation detected")
 
             usage_metadata = getattr(item, "usage_metadata", None)
@@ -544,7 +544,7 @@ class TaskRequester(Base):
                 "\n", "".join(state.think_parts).strip()
             )
 
-            if self.requester.has_output_degradation(
+            if self.requester.config.check_degradation and self.requester.has_output_degradation(
                 response_result[
                     -self.requester.STREAM_DEGRADATION_FALLBACK_WINDOW_CHARS :
                 ]

@@ -56,6 +56,7 @@ class Config:
     check_kana_residue: bool = True
     check_hangeul_residue: bool = True
     check_similarity: bool = True
+    check_degradation: bool = True
     write_translated_name_fields_to_file: bool = True
     auto_process_prefix_suffix_preserved_text: bool = True
 
@@ -154,6 +155,7 @@ class Config:
         self.check_kana_residue: bool = True
         self.check_hangeul_residue: bool = True
         self.check_similarity: bool = True
+        self.check_degradation: bool = True
         self.write_translated_name_fields_to_file: bool = True
         self.auto_process_prefix_suffix_preserved_text: bool = True
 

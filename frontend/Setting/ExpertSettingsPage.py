@@ -86,10 +86,17 @@ class ExpertSettingsPage(Base, QWidget):
         action_check_hangeul.setCheckable(True)
         menu.addAction(action_check_hangeul)
 
+        action_check_degradation = Action(
+            Localizer.get().expert_settings_page_response_check_degradation, self
+        )
+        action_check_degradation.setCheckable(True)
+        menu.addAction(action_check_degradation)
+
         def sync_action_checked(config: Config) -> None:
             action_check_kana.setChecked(config.check_kana_residue)
             action_check_hangeul.setChecked(config.check_hangeul_residue)
             action_check_similarity.setChecked(config.check_similarity)
+            action_check_degradation.setChecked(config.check_degradation)
 
             action_check_kana.setIcon(
                 BaseIcon.CIRCLE_CHECK if config.check_kana_residue else BaseIcon.CIRCLE
@@ -101,6 +108,9 @@ class ExpertSettingsPage(Base, QWidget):
             )
             action_check_similarity.setIcon(
                 BaseIcon.CIRCLE_CHECK if config.check_similarity else BaseIcon.CIRCLE
+            )
+            action_check_degradation.setIcon(
+                BaseIcon.CIRCLE_CHECK if config.check_degradation else BaseIcon.CIRCLE
             )
 
         def on_check_kana_triggered() -> None:
@@ -121,6 +131,12 @@ class ExpertSettingsPage(Base, QWidget):
             config.save()
             sync_action_checked(config)
 
+        def on_check_degradation_triggered() -> None:
+            config = Config().load()
+            config.check_degradation = action_check_degradation.isChecked()
+            config.save()
+            sync_action_checked(config)
+
         def before_show_menu() -> None:
             config = Config().load()
             sync_action_checked(config)
@@ -131,6 +147,9 @@ class ExpertSettingsPage(Base, QWidget):
         )
         action_check_similarity.triggered.connect(
             lambda checked: on_check_similarity_triggered()
+        )
+        action_check_degradation.triggered.connect(
+            lambda checked: on_check_degradation_triggered()
         )
 
         card = SettingCard(
