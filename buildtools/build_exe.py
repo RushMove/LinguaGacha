@@ -1,3 +1,4 @@
+import importlib.metadata
 import importlib.util
 import os
 import sys
@@ -36,12 +37,31 @@ def restore_opencc_init(backup: tuple[Path, str] | None) -> None:
 
 backup = patch_opencc_init()
 
+
+# charset_normalizer ships mypyc-compiled extensions as top-level modules with hashed
+# names (e.g. 81d243bd2c585b0f4821__mypyc). PyInstaller cannot auto-discover them
+# because they live outside the charset_normalizer package directory.
+def collect_charset_normalizer_mypyc() -> list[str]:
+    args: list[str] = []
+    try:
+        dist = importlib.metadata.distribution("charset-normalizer")
+        if dist.files:
+            for f in dist.files:
+                name = str(f.name)
+                if "__mypyc" in name:
+                    module_name = name.split(".")[0]
+                    args.append(f"--hidden-import={module_name}")
+    except importlib.metadata.PackageNotFoundError:
+        pass
+    return args
+
+
 # 公共配置
 common_args = [
     "--collect-all=rich",
     "--collect-all=opencc_pyo3",
     "--collect-all=charset_normalizer",
-]
+] + collect_charset_normalizer_mypyc()
 
 if is_macos:
     # macOS：创建 .app 应用包
